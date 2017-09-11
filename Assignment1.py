@@ -1,14 +1,10 @@
 #!/usr/bin/python
 
-# Assignment 1
+# 8-Puzzle Solver
 # Created by: Brian Standage
 # Created on: 8/30/17
 # Last modified by: Brian Standage
-# Last modified on: 9/6/17
-
-
-# generate a tree. The first shuffeled state rpersents the root node. Available
-# moves while avoiding repeats represents the child nodes.
+# Last modified on: 9/11/17
 
 
 from random import shuffle
@@ -22,11 +18,7 @@ board = [["", 1, 3],
          [4, 2, 5],
          [7, 8, 6]]
 
-board2 = [["", 1, 3],
-         [4, 2, 5],
-         [7, 8, 6]]
-
-
+# Prints a visual representation of the state of the board
 def makeState(state):
     for row in state:
         print(row)
@@ -44,19 +36,6 @@ def expand_node(node, nodes):
 
     expanded_nodes = [node for node in expanded_nodes if(node.state != None)]
     return expanded_nodes
-
-def generalSearch(queue, limit, numRuns):
-    if queue == []:
-        return False
-    elif testProcedure(queue[0]):
-        outputProcedure(numRuns, queue[0])
-    elif limit == 0:
-        print ("Limit reached")
-    else:
-        limit -= 1
-        numRuns += 1
-        generalSearch(expandProcedure(queue[0],
-        queue[1:len(queue)]), limit, numRuns)
 
 
 # Shifts the blank square left
@@ -158,6 +137,7 @@ def bfs(start, goal):
         
         nodes.extend(expand_node(node, nodes))
 
+# Prints a visual representation of the solution
 def displaySolution(result):
     global board
     for row in board:
@@ -207,8 +187,7 @@ def main():
         print("No solution found to the given puzzle")
     elif(result == [None]):
         print("The starting node was the goal")
-    else:
-        
+    else:       
         print(result)
         print(len(result), "moves")
         print("\nSolution: ")
