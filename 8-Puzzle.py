@@ -9,6 +9,7 @@
 
 from random import shuffle
 import copy
+import time
 
 
 # Generates and returns a state based on the given arguments
@@ -167,6 +168,7 @@ def outOfPlace(state, goal):
 
 
 def testUninformedSearch(init, goal, limit):
+    startTime = time.time()
     result = bfs(init, goal)
     global board
     board = copy.deepcopy(init)
@@ -182,6 +184,7 @@ def testUninformedSearch(init, goal, limit):
             print(len(result), "moves")
             print("\nSolution: ")
             displaySolution(result)
+            print("Time elapsed: ", time.time() - startTime)
             break
         limit = limit - 1
     if(limit < 0):
