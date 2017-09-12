@@ -20,4 +20,11 @@ And a more complex puzzle:
       goalState = makeState(1, 2, 3, 4, 5, 6, 7, 8, " ")
       testUninformedSearch(initialState, goalState, 200)
 
+## Complexity
+
+The worst-case time complexity of breadth first search is O(b<sup>d</sup>) given that d is the depth and b is the number of nodes at that depth.
+
+The worst-case space compledity of breadth first search is also O(b<sup>d</sup>)
+
+
 
