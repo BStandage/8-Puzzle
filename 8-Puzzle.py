@@ -10,23 +10,31 @@
 from random import shuffle
 import copy
 
-goal = [[1, 2, 3],
-        [4, 5, 6],
-        [7, 8, ""]]
 
-board = [["", 1, 3],
-         [4, 2, 5],
-         [7, 8, 6]]
+# Generates and returns a state based on the given arguments
+# Insures that if the user makes a state with " " as a blank
+# instead of "", the program will still execute properly (temporary fix)
+# *(in process of streamlining the process to convert any coordinate with a value of " " to "")*
+def makeState(nw, n, ne, w, c, e, sw, s, se):
+    if(nw == " "): nw = ""
+    elif(n == " "): n = ""
+    elif(ne == " "): ne = ""
+    elif(w == " "): w = ""
+    elif(c == " "): c = ""
+    elif(e == " "): e = ""
+    elif(sw == " "): sw = ""
+    elif(s == " "): s = ""
+    elif(se == " "): se = ""
+           
+    return [[nw, n, ne],
+            [w, c, e],
+            [sw, s, se]]
 
-# Prints a visual representation of the state of the board
-def makeState(state):
-    for row in state:
-        print(row)
-    print('\n')
-
+# Creates a new node
 def makeNode(state, parent, operator, depth, pathCost):
     return Node(state, parent, operator, depth, pathCost)
 
+# Expands all the nodes and filters out the paths that do not have a solution
 def expand_node(node, nodes):
     expanded_nodes = []
     expanded_nodes.append(makeNode(moveUp(node.state, getBlankX(node.state), getBlankY(node.state)), node, "u", node.depth + 1, 0))
@@ -112,7 +120,6 @@ def getBlankY(state):
             return (x.index(""))
 
 
-
 # Breadth first search from start to goal
 def bfs(start, goal):
     nodes = []
@@ -137,13 +144,56 @@ def bfs(start, goal):
         
         nodes.extend(expand_node(node, nodes))
 
+# Calculates how far each tile is from its goal state, and sums those distances *(not used yet)*
+def distanceHeuristic(matrix, goal):
+    sum = 0
+    for i in range(0, len(goal)):
+        for j in range(0, len(goal)):
+            tile = goal[i][j]
+            for k in range(0, len(matrix)):
+                for l in range(0, len(matrix)):
+                    if matrix[k][l] == tile:
+                        sum += (k - i)*(k - i)+(j - l)*(j - l)
+    return sum
+
+
+# Calculates how many tiles are out of place in terms of the goal state *(not used yet)*
+def outOfPlace(state, goal):
+    sum = 0
+    for i in range(0, len(state)):
+        if(sate[i] == goal[i]):
+            sum = sum + 1
+    return sum
+
+
+def testUninformedSearch(init, goal, limit):
+    result = bfs(init, goal)
+    global board
+    board = copy.deepcopy(init)
+    while(limit >= 0):
+        if(result == None):
+            print("No solution found to the given puzzle")
+            break
+        elif(result == [None]):
+            print("The starting node was the goal")
+            break
+        else:       
+            print(result)
+            print(len(result), "moves")
+            print("\nSolution: ")
+            displaySolution(result)
+            break
+        limit = limit - 1
+    if(limit < 0):
+        print("Limit reached before a solution was found")
+
 # Prints a visual representation of the solution
 def displaySolution(result):
     global board
     for row in board:
         print(row)
     print('\n')
-    
+
     for i in result:
         if(i == 'r'):
             board = copy.deepcopy(moveRight(board, getBlankX(board), getBlankY(board)))
@@ -179,24 +229,10 @@ class Node:
         self.depth = depth
         self.cost = cost
 
-def main():
-    state = copy.deepcopy(board)
-    result = bfs(state, goal)
-
-    if(result == None):
-        print("No solution found to the given puzzle")
-    elif(result == [None]):
-        print("The starting node was the goal")
-    else:       
-        print(result)
-        print(len(result), "moves")
-        print("\nSolution: ")
-        displaySolution(result)
-        
 
 if __name__ == "__main__":
-    main()
-
-
-
+    # Simple test to show the desired input and expected output of the program
+    initialState = makeState(1, 2, 3, 4, 5, 6, 7, 8, " ")
+    goalState = makeState(1, 2, 3, 4, 5, 6, 7, " ", 8)
+    testUninformedSearch(initialState, goalState, 200)
 
