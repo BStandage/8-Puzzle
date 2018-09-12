@@ -4,7 +4,7 @@ A python program that implements breadth first search to solve an 8-puzzle.
 ### Running the Program
 Within "if __ name __ == __ main __:" the user must create an initial state and a goal state. 
 
-To find a solution to the 8-puzzle using breadth first search, the user must call the "testUninformedSearch" method and pass it an initial state, goal state, and limit to stop the program if a solution is not found after a certain number of executions. 
+To find a solution to the 8-puzzle using breadth first search, the user must call the "testUninformedSearch" function and pass it an initial state, goal state, and limit to stop the program if a solution is not found after a certain number of executions. 
 
 A simple example of how to run the program would be as follows:
     
